@@ -1,0 +1,8 @@
+click
+requests
+geopy
+dateparser
+timezonefinder
+filelock
+prompt-toolkit
+pytest
