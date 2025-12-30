@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "todo_weather_scheduler"
+version = "0.1.0"
+description = "CLI Todo app that suggests candidate dates based on weather"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["requests", "dateparser", "typer", "python-dateutil"]
