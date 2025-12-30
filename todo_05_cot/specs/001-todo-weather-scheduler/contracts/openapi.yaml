@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Todo Weather Scheduler (CLI - HTTP Contract)
+  version: '0.1.0'
+  description: Minimal HTTP contract to represent operations (primarily for integration tests / future API)
+paths:
+  /tasks:
+    get:
+      summary: List tasks
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '201':
+          description: Created
+  /tasks/{taskId}:
+    get:
+      summary: Get task details
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      summary: Update a task
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      summary: Delete (or mark complete) a task
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+
+components:
+  schemas:
+    Location:
+      type: object
+      properties:
+        display_name:
+          type: string
+        lat:
+          type: number
+        lon:
+          type: number
+        timezone:
+          type: string
+    CandidateDate:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        expected_precipitation:
+          type: number
+        expected_temperature:
+          type: number
+    TaskCreate:
+      type: object
+      required: [title, deadline, place]
+      properties:
+        title:
+          type: string
+        priority:
+          type: string
+          enum: [low, medium, high]
+        place:
+          $ref: '#/components/schemas/Location'
+        deadline:
+          type: string
+          description: Natural language or ISO datetime (implementation will parse)
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        priority:
+          type: string
+          enum: [low, medium, high]
+        completed:
+          type: boolean
+        candidate_dates:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateDate'
